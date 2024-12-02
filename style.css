@@ -1,0 +1,228 @@
+/* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif; /* Specify the font family */
+}
+
+body {
+  display: flex;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom right, #12265E, #92abc4);
+}
+
+::selection {
+  color: #fff;
+  background: #12265E;
+}
+
+.wrapper {
+  width: 1080px;
+  padding: 35px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+}
+
+.wrapper .input-field {
+  opacity: 0;
+  z-index: -999;
+  position: absolute;
+}
+
+.wrapper .content-box {
+  padding: 13px 20px 0;
+  border-radius: 10px;
+  border: 1px solid #bfbfbf;
+}
+
+.content-box .typing-text {
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 300px; /* Set a fixed height for scrolling */
+  line-height: 1.5; /* Adjust line height as needed */
+}
+
+.typing-text::-webkit-scrollbar {
+  width: 5px; /* Customize scrollbar width */
+}
+
+.typing-text::-webkit-scrollbar-thumb {
+  background-color: #bfbfbf; /* Customize scrollbar thumb color */
+  border-radius: 10px;
+}
+
+.typing-text p {
+  font-size: 30px; /* Adjust font size as needed */
+  text-align: left;
+  letter-spacing: 1px;
+  white-space: pre-line; /* Allow pre-formatted text to break at line breaks */
+  text-overflow: ellipsis; /* Show ellipsis for overflow */
+  padding: 10px 0; /* Add padding to the top and bottom */
+}
+
+.typing-text p span {
+  position: relative;
+}
+
+.typing-text p span.correct {
+  color: #56964f;
+}
+
+.typing-text p span.incorrect {
+  color: #cb3439;
+  outline: 1px solid #fff;
+  background: #ffc0cb;
+  border-radius: 4px;
+}
+
+.typing-text p span.active {
+  color: #17A2B8;
+}
+
+.typing-text p span.active::before {
+  position: absolute;
+  content: "";
+  height: 5px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  border-radius: 5px;
+  background: #FF9C2A;
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
+
+.content-box .content {
+  margin-top: 17px;
+  display: flex;
+  padding: 12px 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #bfbfbf;
+}
+
+/* Center align the Submit button */
+.centered-btn {
+  display: block;
+  margin: 20px auto; /* Adjust the margin as needed */
+}
+
+.content button {
+  outline: none;
+  border: none;
+  width: 105px;
+  color: #fff;
+  padding: 20px 0;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #ff9c2a;
+  transition: transform 0.3s ease, background-color 0.3s ease; /* Add transition for background-color */
+}
+
+/* Hover effect for the button */
+.content button:hover {
+  background-color: #0A1734;
+}
+
+.content button:active {
+  transform: scale(0.97);
+}
+
+.content .result-details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: calc(100% - 140px);
+  justify-content: space-between;
+}
+
+.result-details li {
+  display: flex;
+  height: 20px;
+  list-style: none;
+  position: relative;
+  align-items: center;
+}
+
+.result-details li:not(:first-child) {
+  padding-left: 22px;
+  border-left: 1px solid #bfbfbf;
+}
+
+.result-details li p {
+  font-size: 25px;
+}
+
+.result-details li span {
+  display: block;
+  font-size: 25px;
+  margin-left: 10px;
+}
+
+li span b {
+  font-weight: 500;
+}
+
+li:not(:first-child) span {
+  font-weight: 500;
+}
+
+@media (max-width: 745px) {
+  .wrapper {
+    padding: 20px;
+  }
+
+  .content-box .content {
+    padding: 20px 0;
+  }
+
+  .content-box .typing-text {
+    max-height: 100%;
+  }
+
+  .typing-text p {
+    font-size: 19px;
+    text-align: left;
+  }
+
+  .content button {
+    width: 100%;
+    font-size: 20px;
+    padding: 10px 0;
+    margin-top: 20px;
+  }
+
+  .content .result-details {
+    width: 100%;
+  }
+
+  .result-details li:not(:first-child) {
+    border-left: 0;
+    padding: 0;
+  }
+
+  .result-details li p,
+  .result-details li span {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 518px) {
+  .wrapper .content-box {
+    padding: 10px 15px 0;
+  }
+}

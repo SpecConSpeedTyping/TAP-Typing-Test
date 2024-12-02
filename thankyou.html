@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <link rel="stylesheet" href="thank_you.css"> <!-- Link your CSS file here -->
+    <script>
+        // Disallow going back to the previous page
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if coming from the previous page
+            const previousPageURL = "https://specconspeedtypingtest.netlify.app/submit.html";
+            const referrer = document.referrer;
+            if (referrer !== previousPageURL) {
+                alert("Access denied. You have not completed your speed typing test");
+                window.location.href = previousPageURL;
+            }
+
+            // Redirect to home page after 5 seconds
+            setTimeout(function() {
+                window.location.href = "https://speccon.co.za/";
+            }, 15000); // 5000 milliseconds = 5 seconds
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Speed Typing Test Score has been successfully submitted.</h1>
+        <h2 style="color:#12265E">You can close this page now or you will be redirected to our website in 15 seconds</h2>
+        <p style="color: #12265E">We appreciate your participation.</p>
+    </div>
+</body>
+</html>
