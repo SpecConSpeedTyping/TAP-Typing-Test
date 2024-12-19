@@ -17,6 +17,7 @@
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" placeholder="Enter your email" required>
       <label for="applicationid">Unique ID:</label>
+      <input type="text" id="applicationid" name="ApplicationID" placeholder="Enter your Unique ID" pattern="ZR_\d+_CAND" required>
       <label for="SAIDNumber">SA ID Number:</label>
       <input type="text" id="SAIDNumber" name="SAIDNumber" placeholder="Enter your valid SA ID Number" maxlength="13" pattern="\d{13}" required>
       <input type="hidden" id="wpm" name="wpm" value=""> <!-- Add hidden input for WPM -->
@@ -43,7 +44,7 @@
 
     document.addEventListener("DOMContentLoaded", function() {
       // Check if coming from the previous page
-      const previousPageURL = "https://taptypingtest.netlify.app/";
+      const previousPageURL = "https://specconspeedtypingtest.netlify.app/";
       const referrer = document.referrer;
       if (referrer !== previousPageURL) {
         alert("Access denied. Please complete your speed typing test before proceeding with this page");
