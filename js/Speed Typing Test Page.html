@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Scores</title>
+    <link rel="stylesheet" href="page2.css"> <!-- Link your CSS file here if needed -->
+</head>
+<body>
+    <div class="container">
+        <h1>Submit your speed typing test score</h1>
+        <form 
+            method="POST"
+            action="https://flow.zoho.com/841213870/flow/webhook/incoming?zapikey=1001.4fb15fb92985f0cfaf7cd624353c7c0e.584a09ef44b38d044501bd5bba5b0e97&isdebug=false" 
+            ><label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="hidden" id="wpm" name="wpm" value=""> <!-- Add hidden input for WPM -->
+            <input type="hidden" id="accuracy" name="accuracy" value=""> <!-- Add hidden input for Accuracy -->
+            <button type="submit">Submit</button>
+        </form>
+        <div class="score-info">
+            <h2>Your Score:</h2>
+            <p>WPM: <span id="wpmDisplay">0</span></p>
+            <p>Accuracy: <span id="accuracyDisplay">0%</span></p>
+        </div>
+    </div>
+
+    <!-- Add your JavaScript code here -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const wpmDisplay = document.getElementById("wpmDisplay");
+            const accuracyDisplay = document.getElementById("accuracyDisplay");
+
+            // Retrieve saved WPM and Accuracy from sessionStorage
+            var savedWPM = sessionStorage.getItem("WPM");
+            var savedAccuracy = sessionStorage.getItem("Accuracy");
+
+            // Update the elements on the page with the retrieved score data
+            if (savedWPM !== null && savedAccuracy !== null) {
+                wpmDisplay.innerText = savedWPM;
+                accuracyDisplay.innerText = savedAccuracy;
+                // Set the values of hidden inputs for WPM and Accuracy
+                document.getElementById("wpm").value = savedWPM;
+                document.getElementById("accuracy").value = savedAccuracy;
+            }
+        });
+    </script>
+</body>
+</html>
