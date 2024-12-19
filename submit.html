@@ -13,7 +13,7 @@
     <form id="scoreForm"
       method="POST"
       action="https://flow.zoho.com/841213870/flow/webhook/incoming?zapikey=1001.a7b9d4debe915bc51c5005abf49bb5b3.70c627f0c48b96486c32386a02c8e12f&isdebug=false" 
-      >
+    >
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" placeholder="Enter your email" required>
       <label for="SAIDNumber">SA ID Number:</label>
@@ -54,7 +54,6 @@
       const mistakesDisplay = document.getElementById("mistakesDisplay");
       const emailInput = document.getElementById("email");
       const submitButton = document.getElementById("submitButton");
-      const applicationID = document.getElementById("applicationid");
       const submissionResult = document.getElementById("submissionResult");
       const saidNumberInput = document.getElementById("SAIDNumber");
 
@@ -97,12 +96,6 @@
           return;
         }
 
-        // Validate Application ID input
-        if (!validateApplicationID(applicationID.value)) {
-          alert("Please enter a valid Application ID in the right format");
-          return;
-        }
-
         // Confirm email matches stored email
         if (emailInput.value !== storedEmail) {
           alert("Emails do not match. Please enter the same email you used on the previous page.");
@@ -130,7 +123,7 @@
 
       // Function to validate email format
       function validateEmail(email) {
-        const regex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
       }
 
