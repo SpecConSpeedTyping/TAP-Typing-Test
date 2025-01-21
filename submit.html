@@ -22,7 +22,7 @@
       <input type="hidden" id="accuracy" name="accuracy" value=""> <!-- Add hidden input for Accuracy -->
       <input type="hidden" id="mistakes" name="mistakes" value=""> <!-- Add hidden input for Mistakes -->
       <input type="hidden" id="passOrFail" name="AssociatedTag" value=""><!-- Add hidden input for pass or fail -->
-      <button type="submit" id="submitButton" onClick="hide()">Submit</button>
+      <button type="submit" id="submitButton" onClick="hide(event)">Submit</button>
     </form>
     <div class="score-info">
       <h2>Your Score:</h2>
@@ -42,41 +42,15 @@
     };
 
     document.addEventListener("DOMContentLoaded", function() {
-      const wpmDisplay = document.getElementById("wpmDisplay");
-      const accuracyDisplay = document.getElementById("accuracyDisplay");
-      const mistakesDisplay = document.getElementById("mistakesDisplay");
       const emailInput = document.getElementById("email");
-      const submitButton = document.getElementById("submitButton");
-      const submissionResult = document.getElementById("submissionResult");
-      const successMessage = document.getElementById("successMessage");
       const saidNumberInput = document.getElementById("SAIDNumber");
+      const submitButton = document.getElementById("submitButton");
+      const successMessage = document.getElementById("successMessage");
+      const submissionResult = document.getElementById("submissionResult");
 
-      // Retrieve saved WPM, Accuracy, and Mistakes from sessionStorage
-      const savedWPM = sessionStorage.getItem("WPM");
-      const savedAccuracy = sessionStorage.getItem("Accuracy");
-      const savedMistakes = sessionStorage.getItem("Mistakes");
-
-      // Retrieve the stored email from sessionStorage
-      const storedEmail = sessionStorage.getItem("userEmail");
-
-      // Update the elements on the page with the retrieved score data
-      if (savedWPM && savedAccuracy && savedMistakes) {
-        wpmDisplay.innerText = savedWPM;
-        accuracyDisplay.innerText = savedAccuracy;
-        mistakesDisplay.innerText = savedMistakes;
-        // Set the values of hidden inputs for WPM, Accuracy, and Mistakes
-        document.getElementById("wpm").value = savedWPM;
-        document.getElementById("accuracy").value = savedAccuracy;
-        document.getElementById("mistakes").value = savedMistakes;
-
-        // Calculate pass or fail based on WPM
-        const passOrFailValue = savedWPM >= 20 ? "Passed Speed Typing Test" : "Failed Speed Typing Test";
-        document.getElementById("passOrFail").value = passOrFailValue;
-      }
-
-      // Add event listener to form submission with confirmation dialog
-      document.getElementById("scoreForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent default form submission
+      // Function to hide the button and show a success message conditionally
+      function hide(event) {
+        event.preventDefault(); // Prevent form submission
 
         // Validate email input
         if (!validateEmail(emailInput.value)) {
@@ -90,30 +64,16 @@
           return;
         }
 
-        // Confirm email matches stored email
-        if (emailInput.value !== storedEmail) {
-          alert("Emails do not match. Please enter the same email you used on the previous page.");
-          return;
-        }
+        // If validation passes, hide the button and show the success message
+        submitButton.style.display = "none";
+        successMessage.innerText = "Great job! Your scores have been successfully submitted.";
+        successMessage.style.display = "block";
 
-        // Confirm submission
-        const isConfirmed = confirm("Are you sure you want to submit the form?");
-        if (!isConfirmed) {
-          return;
-        }
-
-        // Proceed with form submission if validation passes
-        const formData = new FormData(this);
-        fetch(this.action, {
-          method: this.method,
-          body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-          handleFormSubmissionResult(data);
-        })
-        .catch(error => console.error('Error submitting form:', error));
-      });
+        // Optional: Simulate form submission
+        setTimeout(() => {
+          console.log("Simulated form submission");
+        }, 1000);
+      }
 
       // Function to validate email format
       function validateEmail(email) {
@@ -127,35 +87,9 @@
         return regex.test(saidNumber);
       }
 
-      // Function to handle form submission result
-      function handleFormSubmissionResult(result) {
-        if (result.result === 'success') {
-          submissionResult.innerHTML = '<p><center><h1>Submission Successful</h1></center></p>';
-          // Hide the submit button
-          submitButton.style.display = 'none';
-          // Show success message
-          successMessage.innerText = "Great job! Your scores have been successfully submitted.";
-          successMessage.style.display = "block";
-          // Redirect after 1.5 seconds
-          setTimeout(function() {
-            window.location.href = "thankyou.html";
-          }, 1500);
-        } else {
-          submissionResult.innerText = "Your Speed Typing Test Results failed to submit.";
-        }
-      }
+      // Attach the `hide` function to the button's `onclick` event
+      submitButton.onclick = hide;
     });
-
-    // Function to hide the button and show a success message
-    function hide() {
-      const button = document.getElementById('submitButton');
-      const successMessage = document.getElementById('successMessage');
-      if (button) {
-        button.style.display = "none";
-        successMessage.innerText = "Great job! Your scores have been successfully submitted.";
-        successMessage.style.display = "block";
-      }
-    }
   </script>
 </body>
 </html>
