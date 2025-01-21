@@ -31,6 +31,7 @@
       <p>Mistakes: <span id="mistakesDisplay">0</span></p> <!-- Display Mistakes -->
     </div>
     <div id="submissionResult"></div> <!-- Display submission result -->
+    <div id="successMessage" style="display: none; text-align: center; font-size: 18px; color: green; margin-top: 20px;"></div> <!-- Success message -->
   </div>
 
   <script>
@@ -47,6 +48,7 @@
       const emailInput = document.getElementById("email");
       const submitButton = document.getElementById("submitButton");
       const submissionResult = document.getElementById("submissionResult");
+      const successMessage = document.getElementById("successMessage");
       const saidNumberInput = document.getElementById("SAIDNumber");
 
       // Retrieve saved WPM, Accuracy, and Mistakes from sessionStorage
@@ -131,6 +133,9 @@
           submissionResult.innerHTML = '<p><center><h1>Submission Successful</h1></center></p>';
           // Hide the submit button
           submitButton.style.display = 'none';
+          // Show success message
+          successMessage.innerText = "Great job! Your scores have been successfully submitted.";
+          successMessage.style.display = "block";
           // Redirect after 1.5 seconds
           setTimeout(function() {
             window.location.href = "thankyou.html";
@@ -141,11 +146,14 @@
       }
     });
 
-    // Function to hide the button on click
+    // Function to hide the button and show a success message
     function hide() {
       const button = document.getElementById('submitButton');
+      const successMessage = document.getElementById('successMessage');
       if (button) {
         button.style.display = "none";
+        successMessage.innerText = "Great job! Your scores have been successfully submitted.";
+        successMessage.style.display = "block";
       }
     }
   </script>
