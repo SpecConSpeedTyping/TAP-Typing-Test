@@ -41,12 +41,46 @@
       history.go(1);
     };
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       const emailInput = document.getElementById("email");
       const saidNumberInput = document.getElementById("SAIDNumber");
       const submitButton = document.getElementById("submitButton");
       const successMessage = document.getElementById("successMessage");
-      const submissionResult = document.getElementById("submissionResult");
+      const wpmDisplay = document.getElementById("wpmDisplay");
+      const accuracyDisplay = document.getElementById("accuracyDisplay");
+      const mistakesDisplay = document.getElementById("mistakesDisplay");
+
+      // Retrieve values from sessionStorage
+      const savedWPM = sessionStorage.getItem("WPM");
+      const savedAccuracy = sessionStorage.getItem("Accuracy");
+      const savedMistakes = sessionStorage.getItem("Mistakes");
+      const storedEmail = sessionStorage.getItem("userEmail");
+
+      // Debugging: Log the retrieved values
+      console.log("Retrieved WPM:", savedWPM);
+      console.log("Retrieved Accuracy:", savedAccuracy);
+      console.log("Retrieved Mistakes:", savedMistakes);
+      console.log("Retrieved Email:", storedEmail);
+
+      // Update the display elements with sessionStorage values
+      if (savedWPM !== null) {
+        wpmDisplay.innerText = savedWPM;
+        document.getElementById("wpm").value = savedWPM; // Update hidden input
+      }
+
+      if (savedAccuracy !== null) {
+        accuracyDisplay.innerText = `${savedAccuracy}%`;
+        document.getElementById("accuracy").value = savedAccuracy; // Update hidden input
+      }
+
+      if (savedMistakes !== null) {
+        mistakesDisplay.innerText = savedMistakes;
+        document.getElementById("mistakes").value = savedMistakes; // Update hidden input
+      }
+
+      if (storedEmail !== null) {
+        emailInput.value = storedEmail; // Pre-fill the email input
+      }
 
       // Function to hide the button and show a success message conditionally
       function hide(event) {
