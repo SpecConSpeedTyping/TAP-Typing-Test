@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submit Your Scores</title>
-  <link rel="stylesheet" href="page2.css"> <!-- Link your CSS file here if needed -->
+  <link rel="stylesheet" href="page2.css">
 </head>
 <body>
   <div class="container">
@@ -18,102 +18,62 @@
       <input type="email" id="email" name="email" placeholder="Enter your email" required>
       <label for="SAIDNumber">SA ID Number:</label>
       <input type="text" id="SAIDNumber" name="SAIDNumber" placeholder="Enter your valid SA ID Number" maxlength="13" pattern="\d{13}" required>
-      <input type="hidden" id="wpm" name="wpm" value=""> <!-- Add hidden input for WPM -->
-      <input type="hidden" id="accuracy" name="accuracy" value=""> <!-- Add hidden input for Accuracy -->
-      <input type="hidden" id="mistakes" name="mistakes" value=""> <!-- Add hidden input for Mistakes -->
-      <input type="hidden" id="passOrFail" name="AssociatedTag" value=""><!-- Add hidden input for pass or fail -->
+      <input type="hidden" id="wpm" name="wpm" value="">
+      <input type="hidden" id="accuracy" name="accuracy" value="">
+      <input type="hidden" id="mistakes" name="mistakes" value="">
+      <input type="hidden" id="passOrFail" name="AssociatedTag" value="">
       <button type="submit" id="submitButton" onClick="hide(event)">Submit</button>
     </form>
     <div class="score-info">
       <h2>Your Score:</h2>
       <p>WPM: <span id="wpmDisplay">0</span></p>
       <p>Accuracy: <span id="accuracyDisplay">0%</span></p>
-      <p>Mistakes: <span id="mistakesDisplay">0</span></p> <!-- Display Mistakes -->
+      <p>Mistakes: <span id="mistakesDisplay">0</span></p>
     </div>
-    <div id="submissionResult"></div> <!-- Display submission result -->
-    <div id="successMessage" style="display: none; text-align: center; font-size: 18px; color: green; margin-top: 20px;"></div> <!-- Success message -->
+    <div id="submissionResult"></div>
+    <div id="successMessage" style="display: none; text-align: center; font-size: 18px; color: green; margin-top: 20px;"></div>
   </div>
 
   <script>
-    // Disallow going back to the previous page
-    history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-      history.go(1);
-    };
-
     document.addEventListener("DOMContentLoaded", function () {
       const emailInput = document.getElementById("email");
       const saidNumberInput = document.getElementById("SAIDNumber");
       const submitButton = document.getElementById("submitButton");
       const successMessage = document.getElementById("successMessage");
-      const wpmDisplay = document.getElementById("wpmDisplay");
-      const accuracyDisplay = document.getElementById("accuracyDisplay");
-      const mistakesDisplay = document.getElementById("mistakesDisplay");
 
-      // Retrieve values from sessionStorage
-      const savedWPM = sessionStorage.getItem("WPM");
-      const savedAccuracy = sessionStorage.getItem("Accuracy");
-      const savedMistakes = sessionStorage.getItem("Mistakes");
-      const storedEmail = sessionStorage.getItem("userEmail");
-
-      // Debugging: Log the retrieved values
-      console.log("Retrieved WPM:", savedWPM);
-      console.log("Retrieved Accuracy:", savedAccuracy);
-      console.log("Retrieved Mistakes:", savedMistakes);
-      console.log("Retrieved Email:", storedEmail);
-
-      // Update the display elements with sessionStorage values
-      if (savedWPM !== null) {
-        wpmDisplay.innerText = savedWPM;
-        document.getElementById("wpm").value = savedWPM; // Update hidden input
-      }
-
-      if (savedAccuracy !== null) {
-        accuracyDisplay.innerText = `${savedAccuracy}%`;
-        document.getElementById("accuracy").value = savedAccuracy; // Update hidden input
-      }
-
-      if (savedMistakes !== null) {
-        mistakesDisplay.innerText = savedMistakes;
-        document.getElementById("mistakes").value = savedMistakes; // Update hidden input
-      }
-
-      if (storedEmail !== null) {
-        emailInput.value = storedEmail; // Pre-fill the email input
-      }
-
-      // Function to hide the button and show a success message conditionally
       function hide(event) {
-        event.preventDefault(); // Prevent form submission initially
+        event.preventDefault();
 
-        // Validate email input
         if (!validateEmail(emailInput.value)) {
           alert("Please enter a valid email address.");
           return;
         }
 
-        // Validate SA ID Number input
         if (!validateSAIDNumber(saidNumberInput.value)) {
           alert("Please enter a valid 13-digit SA ID Number.");
           return;
         }
 
-        // If validation passes, hide the button and show the success message
         submitButton.style.display = "none";
         successMessage.innerText = "Great job! Your scores have been successfully submitted.";
         successMessage.style.display = "block";
 
-        // Submit the form programmatically
-        document.getElementById("scoreForm").submit();
+        const formData = new FormData(document.getElementById("scoreForm"));
+
+        fetch(document.getElementById("scoreForm").action, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => console.log("Success:", data))
+          .catch((error) => console.error("Error:", error));
       }
 
-      // Function to validate email format
       function validateEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
       }
 
-      // Function to validate SA ID Number format
       function validateSAIDNumber(saidNumber) {
         const regex = /^\d{13}$/;
         return regex.test(saidNumber);
