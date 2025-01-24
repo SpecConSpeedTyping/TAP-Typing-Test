@@ -84,7 +84,7 @@
 
       // Function to hide the button and show a success message conditionally
       function hide(event) {
-        event.preventDefault(); // Prevent form submission
+        event.preventDefault(); // Prevent form submission initially
 
         // Validate email input
         if (!validateEmail(emailInput.value)) {
@@ -103,10 +103,8 @@
         successMessage.innerText = "Great job! Your scores have been successfully submitted.";
         successMessage.style.display = "block";
 
-        // Optional: Simulate form submission
-        setTimeout(() => {
-          console.log("Simulated form submission");
-        }, 1000);
+        // Submit the form programmatically
+        document.getElementById("scoreForm").submit();
       }
 
       // Function to validate email format
@@ -120,9 +118,6 @@
         const regex = /^\d{13}$/;
         return regex.test(saidNumber);
       }
-
-      // Attach the `hide` function to the button's `onclick` event
-      submitButton.onclick = hide;
     });
   </script>
 </body>
