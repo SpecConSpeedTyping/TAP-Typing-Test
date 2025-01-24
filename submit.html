@@ -18,10 +18,10 @@
       <input type="email" id="email" name="email" placeholder="Enter your email" required>
       <label for="SAIDNumber">SA ID Number:</label>
       <input type="text" id="SAIDNumber" name="SAIDNumber" placeholder="Enter your valid SA ID Number" maxlength="13" pattern="\d{13}" required>
-      <input type="hidden" id="wpm" name="wpm" value="">
-      <input type="hidden" id="accuracy" name="accuracy" value="">
-      <input type="hidden" id="mistakes" name="mistakes" value="">
-      <input type="hidden" id="passOrFail" name="AssociatedTag" value="">
+      <input type="hidden" id="wpm" name="wpm" value=""> <!-- WPM -->
+      <input type="hidden" id="accuracy" name="accuracy" value=""> <!-- Accuracy -->
+      <input type="hidden" id="mistakes" name="mistakes" value=""> <!-- Mistakes -->
+      <input type="hidden" id="passOrFail" name="AssociatedTag" value=""><!-- AssociatedTag -->
       <button type="submit" id="submitButton" onClick="hide(event)">Submit</button>
     </form>
     <div class="score-info">
@@ -40,40 +40,92 @@
       const saidNumberInput = document.getElementById("SAIDNumber");
       const submitButton = document.getElementById("submitButton");
       const successMessage = document.getElementById("successMessage");
+      const wpmInput = document.getElementById("wpm");
+      const accuracyInput = document.getElementById("accuracy");
+      const mistakesInput = document.getElementById("mistakes");
+      const associatedTagInput = document.getElementById("passOrFail");
+
+      const wpmDisplay = document.getElementById("wpmDisplay");
+      const accuracyDisplay = document.getElementById("accuracyDisplay");
+      const mistakesDisplay = document.getElementById("mistakesDisplay");
+
+      // Retrieve values from sessionStorage
+      const savedWPM = sessionStorage.getItem("WPM") || "0";
+      const savedAccuracy = sessionStorage.getItem("Accuracy") || "0";
+      const savedMistakes = sessionStorage.getItem("Mistakes") || "0";
+      const storedEmail = sessionStorage.getItem("userEmail");
+
+      // Populate hidden inputs and display elements
+      wpmInput.value = savedWPM;
+      wpmDisplay.innerText = savedWPM;
+
+      accuracyInput.value = savedAccuracy;
+      accuracyDisplay.innerText = `${savedAccuracy}%`;
+
+      mistakesInput.value = savedMistakes;
+      mistakesDisplay.innerText = savedMistakes;
+
+      if (storedEmail) {
+        emailInput.value = storedEmail; // Pre-fill the email input
+      }
+
+      // Set AssociatedTag based on example logic
+      associatedTagInput.value = savedWPM >= 40 && savedAccuracy >= 90 ? "Pass" : "Fail";
+
+      // Debugging: Log all values being set
+      console.log("Populated WPM:", wpmInput.value);
+      console.log("Populated Accuracy:", accuracyInput.value);
+      console.log("Populated Mistakes:", mistakesInput.value);
+      console.log("Populated AssociatedTag:", associatedTagInput.value);
 
       function hide(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent default form submission
 
+        // Validate email input
         if (!validateEmail(emailInput.value)) {
           alert("Please enter a valid email address.");
           return;
         }
 
+        // Validate SA ID Number input
         if (!validateSAIDNumber(saidNumberInput.value)) {
           alert("Please enter a valid 13-digit SA ID Number.");
           return;
         }
 
+        // Hide the submit button and show a success message
         submitButton.style.display = "none";
         successMessage.innerText = "Great job! Your scores have been successfully submitted.";
         successMessage.style.display = "block";
 
+        // Serialize form data and submit via fetch
         const formData = new FormData(document.getElementById("scoreForm"));
+
+        // Debug: Log the FormData keys and values
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+        }
 
         fetch(document.getElementById("scoreForm").action, {
           method: "POST",
           body: formData,
         })
           .then((response) => response.json())
-          .then((data) => console.log("Success:", data))
-          .catch((error) => console.error("Error:", error));
+          .then((data) => {
+            console.log("Success:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       }
 
+      // Validate email format
       function validateEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
       }
 
+      // Validate SA ID Number format
       function validateSAIDNumber(saidNumber) {
         const regex = /^\d{13}$/;
         return regex.test(saidNumber);
