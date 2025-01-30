@@ -10,26 +10,26 @@
   <div class="container">
     <h1>Submit your speed typing test score</h1>
     <p><center>Please ensure your details are correct before you submit as you will not be able to change it afterwards.</center></p>
-    <form netlify id="scoreForm"
-      method="POST"
-      action="https://flow.zoho.com/841213870/flow/webhook/incoming?zapikey=1001.a7b9d4debe915bc51c5005abf49bb5b3.70c627f0c48b96486c32386a02c8e12f&isdebug=false" 
-    >
+    
+    <form id="scoreForm">
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" placeholder="Enter your email" required>
       <label for="SAIDNumber">SA ID Number:</label>
       <input type="text" id="SAIDNumber" name="SAIDNumber" placeholder="Enter your valid SA ID Number" maxlength="13" pattern="\d{13}" required>
-      <input type="hidden" id="wpm" name="wpm" value=""> <!-- WPM -->
-      <input type="hidden" id="accuracy" name="accuracy" value=""> <!-- Accuracy -->
-      <input type="hidden" id="mistakes" name="mistakes" value=""> <!-- Mistakes -->
-      <input type="hidden" id="passOrFail" name="AssociatedTag" value=""><!-- AssociatedTag -->
-      <button type="submit" id="submitButton" onClick="hide(event)">Submit</button>
+      <input type="hidden" id="wpm" name="wpm" value="">
+      <input type="hidden" id="accuracy" name="accuracy" value="">
+      <input type="hidden" id="mistakes" name="mistakes" value="">
+      <input type="hidden" id="passOrFail" name="AssociatedTag" value="">
+      <button type="submit" id="submitButton">Submit</button>
     </form>
+
     <div class="score-info">
       <h2>Your Score:</h2>
       <p>WPM: <span id="wpmDisplay">0</span></p>
       <p>Accuracy: <span id="accuracyDisplay">0%</span></p>
       <p>Mistakes: <span id="mistakesDisplay">0</span></p>
     </div>
+
     <div id="submissionResult"></div>
     <div id="successMessage" style="display: none; text-align: center; font-size: 18px; color: green; margin-top: 20px;"></div>
   </div>
@@ -66,19 +66,18 @@
       mistakesDisplay.innerText = savedMistakes;
 
       if (storedEmail) {
-        emailInput.value = storedEmail; // Pre-fill the email input
+        emailInput.value = storedEmail;
       }
 
       // Set AssociatedTag based on example logic
       associatedTagInput.value = savedWPM >= 40 && savedAccuracy >= 90 ? "Pass" : "Fail";
 
-      // Debugging: Log all values being set
       console.log("Populated WPM:", wpmInput.value);
       console.log("Populated Accuracy:", accuracyInput.value);
       console.log("Populated Mistakes:", mistakesInput.value);
       console.log("Populated AssociatedTag:", associatedTagInput.value);
 
-      function hide(event) {
+      document.getElementById("scoreForm").addEventListener("submit", function (event) {
         event.preventDefault(); // Prevent default form submission
 
         // Validate email input
@@ -100,14 +99,14 @@
 
         // Serialize form data
         const formData = new FormData(document.getElementById("scoreForm"));
+        const webhookURL = "https://flow.zoho.com/841213870/flow/webhook/incoming?zapikey=1001.a7b9d4debe915bc51c5005abf49bb5b3.70c627f0c48b96486c32386a02c8e12f&isdebug=false";
 
-        // Debugging: Log the FormData keys and values
         for (const [key, value] of formData.entries()) {
           console.log(`${key}: ${value}`);
         }
 
         // Submit form data using fetch and redirect upon success
-        fetch(document.getElementById("scoreForm").action, {
+        fetch(webhookURL, {
           method: "POST",
           body: formData,
         })
@@ -124,7 +123,7 @@
             console.error("Error:", error);
             alert("An error occurred while submitting your form. Please try again.");
           });
-      }
+      });
 
       // Validate email format
       function validateEmail(email) {
