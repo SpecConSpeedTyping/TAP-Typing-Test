@@ -11,7 +11,7 @@
     <h1>Submit your speed typing test score</h1>
     <p><center>Please ensure your details are correct before you submit as you will not be able to change it afterwards.</center></p>
     
-    <form id="scoreForm" netlify>
+    <form id="scoreForm">
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" placeholder="Enter your email" required>
       <label for="SAIDNumber">SA ID Number:</label>
@@ -31,7 +31,7 @@
     </div>
 
     <div id="submissionResult"></div>
-    <div id="successMessage" style="display: none; text-align: center; font-size: 18px; margin-top: 20px;"></div>
+    <div id="successMessage" style="display: none; text-align: center; font-size: 18px; color: green; margin-top: 20px;"></div>
   </div>
 
   <script>
@@ -96,7 +96,6 @@
         submitButton.style.display = "none";
         successMessage.innerText = "✅ Great job! Your scores have been successfully submitted.";
         successMessage.style.display = "block";
-        successMessage.style.color = "green";
 
         // Serialize form data
         const formData = new FormData(document.getElementById("scoreForm"));
@@ -106,36 +105,24 @@
           console.log(`${key}: ${value}`);
         }
 
-        // Submit form data using fetch and debug response
+        // Submit form data using fetch
         fetch(webhookURL, {
           method: "POST",
           body: formData,
         })
           .then((response) => {
             console.log("Raw Response:", response); // Log full response object
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
             return response.text(); // Read response as text
           })
           .then((data) => {
             console.log("Webhook Response Text:", data); // Log response text
-            
-            // Keep the form disabled after submission
-            submitButton.disabled = true;
-          })
-          .catch((error) => {
-            console.error("Submission Error:", error);
-            successMessage.innerText = "❌ Error submitting your score. Please try again.";
-            successMessage.style.display = "block";
-            successMessage.style.color = "red";
-            submitButton.style.display = "block"; // Show button again if an error occurs
+            submitButton.disabled = true; // Keep the button disabled after submission
           });
       });
 
       // Validate email format
       function validateEmail(email) {
-        const regex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
       }
 
